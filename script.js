@@ -21,40 +21,38 @@ tasks.push(walk);
 tasks.push(eat)
 
 
+
 //store user data to the local storage
-const storeUserInput=(e)=>{
+const collectUserInput=(e)=>{
   e.preventDefault()
-  console.log("now you just entered store user data")
+ 
   let taskForm = document.createElement("form");
-  taskForm.innerHTML =`<input id="titleField" type="text"> 
-  <input id="check-box" type="checkbox"> `
+  taskForm.innerHTML =`<input id="titleField" type="text"> <input id="check-box" type="checkbox"> `
   taskList.appendChild(taskForm);
   let title = document.getElementById("titleField").value;
   let status = document.getElementById("check-box").value;
   let taskElement = new userData(title, status);
   
-  tasks.push(taskElement);
-  localStorage.setItem("tasks",JSON.stringify(tasks))
+  
+persistUserDataToBrowserStorage(taskElement);
 
-   let existing = JSON.parse(localStorage.getItem("tasks") )||[];
  
-  //  for(let k=0; k < existing.length ;k++){
-
-  //   if(existing[k]!==taskElement && existing[k]!==tasks[tasks.length-1] && !existing.includes(taskElement)){
-  //     localStorage.setItem("tasks", JSON.stringify(tasks));
-  //   } 
-
-
-  //  }
-  //loadTaskList()
-console.log(JSON.parse(localStorage.getItem("tasks") ||[]))
-
-  //taskList.removeChild(taskForm);
 }
 
 let btn = document.getElementById("AddBtn");
-btn.addEventListener("click",storeUserInput);
+btn.addEventListener("click",collectUserInput);
 
+
+function persistUserDataToBrowserStorage(taskElement){
+  
+  let existing = JSON.parse(localStorage.getItem("tasks") )||[];
+  if(!existing.includes(taskElement)){
+      existing.push(taskElement)
+      localStorage.setItem("tasks", JSON.stringify(existing));
+    } 
+  
+  console.log(JSON.parse(localStorage.getItem("tasks") ||[]))
+}
 
 
 
@@ -67,42 +65,56 @@ btn.addEventListener("click",storeUserInput);
 
 //retrive taskList from local storage and display it to user in task display board.
 const loadTaskList=()=>{
-  let retrievedtaskList =
-  JSON.parse(localStorage.getItem("tasks")) || [];
-  //console.log('ret',retrievedtaskList)
-
+  let retrievedtaskList = JSON.parse(localStorage.getItem("tasks")) || [];
+  console.log("retr",retrievedtaskList)
   let ul = document.createElement("ul");
-
-
-  for(let i=0;i < retrievedtaskList.length; i++){
+  for(let i = 0; i < retrievedtaskList.length; i++){
     let li = document.createElement("li");
-    li.innerHTML =`<p id="title${i}" class="taskTitle">
-    ${retrievedtaskList[i].title}</p>
-    <input class="checkBoxValue${i}" id="check-box" type="checkbox"
-    value='${retrievedtaskList[i].status}'>`
+    li.innerHTML =`<p id="title${i}" class="taskTitle">${retrievedtaskList[i].title}</p>
+    <input class="checkBoxValue${i}" id="check-box" type="checkbox" value='${retrievedtaskList[i].status}'>`
     li.style.listStyle="none";
-    li.style.border ="2px solid black"
     li.style.borderRadius ="5px"
     
-    li.style.margin ="0"
-    li.style.padding="0 15px"
     li.style.display="flex"
-    li.style.justifyContent="space-between"
     li.style.margin ="5px"
-    li.style.textAlign ="center"
+   // li.style.textAlign ="center"
+    li.style.width ="100%"
     ul.appendChild(li);
-    ul.style.display="flex"
+    //ul.style.display="flex"
     
-     ul.style.flexDirection ="column"
-     ul.style.justifyContent ="center"
-     ul.style.justifyContent="space-between"
+    //  ul.style.flexDirection ="column"
+    //  ul.style.justifyContent ="center"
+    //  ul.style.justifyContent="space-between"
     
-   
-    
-    
-
 }
 taskList.appendChild(ul);
+taskList.style.width="100%"
+
+
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded",loadTaskList);
+
+
+function currentDate(){
+
+  const currenttime = new Date();
+
+  const day = currenttime.getDate();                    
+  const month = currenttime.toLocaleString('default', { month: 'long' });
+  const hours = currenttime.getHours().toString().padStart(2, '0');  
+  const minutes = currenttime.getMinutes().toString().padStart(2, '0'); 
+  
+  let time = new Date()
+  let headerDate = document.getElementById("header-date");
+  headerDate.textContent = `${day} ${month} ${hours}:${minutes}`;;
+}
+currentDate()
+
 
 const stroke=()=>{
   
@@ -113,14 +125,10 @@ const stroke=()=>{
   
   
 }
-//stroke()
-
-
-}
+stroke()
 
 
 
-document.addEventListener("DOMContentLoaded",loadTaskList);
 
 
 

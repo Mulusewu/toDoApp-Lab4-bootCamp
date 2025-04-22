@@ -23,6 +23,7 @@ body{
     border-radius: 5px;
     padding: 5px;
     display: inline-block;
+    margin: 5px auto;
 }
 #check-box{
     width: 15px;
@@ -33,12 +34,11 @@ body{
     border: 2px solid black;
 }
 #AddBtn{
-
-    border: 1px solid black;
-    text-align: center;
+    width: 40px;
+    border: 2px solid violet;
     border-radius: 50%;
     background-color: purple;
-    padding: 15px;
+    padding:2px 5px;
     margin: 5px;
    
     
@@ -49,9 +49,14 @@ body{
 
 .taskTitle{
     display: inline;
-    width: 80%;
+    width: 70%;
     margin: 0 5px;
     
    
    
+}
+#header-date{
+    margin: 15px 5px;
+    color: purple;
+    font-weight: 600;
 }
